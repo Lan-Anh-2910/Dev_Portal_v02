@@ -1,44 +1,32 @@
 import streamlit as st
 
-PRODUCT_TREE = {
-    "B2B": [
-        "Virtual Account",
-        "BNPL",
-        "Installment",
-        "Card Payment",
-    ],
-    "Bill": [],
-    "Leadgen": [],
-    "Cross-border": [
-        "Collection",
-        "Disbursement",
-        "Check transaction status",
-        "Check balance",
-        "Payment",
-        "Refund",
-        "Settlement",
-        "Onboarding",
-    ],
-}
+PAGES = [
+    ("overview", "Overview"),
+    ("integration_methods", "Integration Methods"),
+    ("sandbox", "Sandbox"),
+    ("api_reference", "API Reference"),
+    ("security", "Security"),
+    ("sdks", "SDKs"),
+    ("webhook", "Webhook"),
+    ("timeout_handling", "Timeout handling"),
+    ("common_errors", "Common Errors"),
+]
 
 def render_product_sidebar():
-    st.markdown("### Products")
+    with st.sidebar:
+        st.subheader("Products")
 
-    for product, subproducts in PRODUCT_TREE.items():
-        with st.expander(product, expanded=(product == st.session_state.product)):
-            if not subproducts:
-                if st.button(product, key=f"product-{product}"):
-                    st.session_state.product = product
-                    st.session_state.subproduct = None
-            else:
-                for sp in subproducts:
-                    selected = (
-                        product == st.session_state.product
-                        and sp == st.session_state.subproduct
-                    )
+        with st.expander("B2B", expanded=True):
+            for key, label in PAGES:
+                if st.button(label, use_container_width=True):
+                    st.session_state.product = "b2b"
+                    st.session_state.page = key
 
-                    label = f"👉 {sp}" if selected else sp
+        with st.expander("Bill"):
+            st.caption("Coming soon")
 
-                    if st.button(label, key=f"{product}-{sp}"):
-                        st.session_state.product = product
-                        st.session_state.subproduct = sp
+        with st.expander("Leadgen"):
+            st.caption("Coming soon")
+
+        with st.expander("Cross-border"):
+            st.caption("Coming soon")
