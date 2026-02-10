@@ -1,7 +1,17 @@
 import streamlit as st
 
 def render():
-    sections = []
+    sections = [
+    {"label": "Version", "id": "version", "level": 2},
+    {"label": "Terminology Table", "id": "terminology", "level": 2},
+    {"label": "Description", "id": "description", "level": 2},
+    {"label": "Business Models", "id": "business-models", "level": 2},
+
+    # SubHeader – CÓ trong content, KHÔNG lên Section
+    {"label": "Direct Merchant", "id": "direct-merchant", "level": 3},
+    {"label": "Master Merchant", "id": "master-merchant", "level": 3},
+]
+
 
     # ===== PAGE TITLE =====
     st.title("B2B / Overview")
