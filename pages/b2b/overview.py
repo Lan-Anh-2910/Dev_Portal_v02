@@ -3,7 +3,7 @@ import streamlit as st
 def render():
     sections = []
 
-    st.title("B2B / Virtual Account")
+    st.title("B2B / Overview")
 
     st.markdown('<a id="overview"></a>', unsafe_allow_html=True)
     st.header("Overview")
