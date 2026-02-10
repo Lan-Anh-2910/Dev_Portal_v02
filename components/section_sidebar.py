@@ -1,8 +1,6 @@
 import streamlit as st
 
-def render_section_sidebar():
+def render_section_sidebar(sections):
     st.markdown("### Sections")
-
-    for section in st.session_state.sections:
-        anchor = section.lower().replace(" ", "-")
-        st.markdown(f"- [{section}](#{anchor})", unsafe_allow_html=True)
+    for sec in sections:
+        st.markdown(f"- [{sec['label']}](#{sec['id']})", unsafe_allow_html=True)
