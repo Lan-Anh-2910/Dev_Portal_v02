@@ -1,21 +1,73 @@
 import streamlit as st
+from components.section_sidebar import render_section_sidebar
+
 
 def render():
-    sections = []
+    center, right = st.columns([4.5, 1.5])
 
-    st.title("API Reference")
+    with center:
+        st.title("B2B / API Reference")
 
-    for sec in [
-        ("auth", "Authenticate Merchant"),
-        ("create", "Create order"),
-        ("query", "Query order"),
-        ("refund", "Refund"),
-        ("cancel", "Cancel"),
-        ("errors", "Error Codes"),
-    ]:
-        st.markdown(f'<a id="{sec[0]}"></a>', unsafe_allow_html=True)
-        st.header(sec[1])
-        st.code("POST /example/api")
-        sections.append({"id": sec[0], "label": sec[1]})
+        # ===== TAB LEVEL 1 =====
+        merchant_tabs = st.tabs(["Direct Merchant", "Master Merchant"])
 
-    return sections
+        with merchant_tabs[0]:
+            merchant_type = "Direct Merchant"
+
+        with merchant_tabs[1]:
+            merchant_type = "Master Merchant"
+
+        # ===== TAB LEVEL 2 =====
+        method_tabs = st.tabs(["Basic / Pro", "H2H"])
+
+        with method_tabs[0]:
+            method_type = "Basic / Pro"
+
+        with method_tabs[1]:
+            method_type = "H2H"
+
+        st.caption(f"{merchant_type} · {method_type}")
+
+        # ===== API CONTENT =====
+        sections = []
+
+        def api_section(title, desc):
+            anchor = title.lower().replace(" ", "-")
+            st.markdown(f'<a id="{anchor}"></a>', unsafe_allow_html=True)
+            st.header(title)
+            st.write(desc)
+            sections.append({"label": title, "id": anchor})
+
+        api_section(
+            "Authenticate Merchant",
+            "Authenticate merchant using API Key and Signature."
+        )
+
+        api_section(
+            "Create Order",
+            "Create a new payment order with amount and reference ID."
+        )
+
+        api_section(
+            "Query Order",
+            "Retrieve order status using order ID."
+        )
+
+        api_section(
+            "Webhook",
+            "Receive payment status updates via server-to-server callback."
+        )
+
+        api_section(
+            "Refund",
+            "Refund a successful transaction partially or fully."
+        )
+
+        api_section(
+            "Cancel",
+            "Cancel an unpaid or pending transaction."
+        )
+
+    # ===== SECTIONS SIDEBAR =====
+    with right:
+        render_section_sidebar(sections)
