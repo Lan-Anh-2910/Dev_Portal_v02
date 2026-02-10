@@ -1,29 +1,46 @@
 import streamlit as st
 from components.product_sidebar import render_product_sidebar
-from components.section_sidebar import render_section_sidebar
-from components.content_renderer import render_content
+from components.breadcrumb import render_breadcrumb
 
-st.set_page_config(
-    page_title="Dev Portal",
-    layout="wide"
-)
-
-# ---------- SESSION STATE ----------
+# default route
 if "product" not in st.session_state:
-    st.session_state.product = "B2B"
-if "subproduct" not in st.session_state:
-    st.session_state.subproduct = "Virtual Account"
-if "sections" not in st.session_state:
-    st.session_state.sections = []
+    st.session_state.product = "b2b"
+if "page" not in st.session_state:
+    st.session_state.page = "overview"
 
-# ---------- LAYOUT ----------
-left, main, right = st.columns([2.5, 7, 2.5])
+st.set_page_config(layout="wide")
 
-with left:
-    render_product_sidebar()
+render_product_sidebar()
+render_breadcrumb(st.session_state.product, st.session_state.page)
 
-with main:
-    render_content()
+# layout
+center, right = st.columns([4.5, 1.5])
+
+with center:
+    if st.session_state.product == "b2b":
+        page = st.session_state.page
+
+        if page == "overview":
+            from pages.b2b.overview import render
+        elif page == "integration_methods":
+            from pages.b2b.integration_methods import render
+        elif page == "sandbox":
+            from pages.b2b.sandbox import render
+        elif page == "api_reference":
+            from pages.b2b.api_reference import render
+        elif page == "security":
+            from pages.b2b.security import render
+        elif page == "sdks":
+            from pages.b2b.sdks import render
+        elif page == "webhook":
+            from pages.b2b.webhook import render
+        elif page == "timeout_handling":
+            from pages.b2b.timeout_handling import render
+        elif page == "common_errors":
+            from pages.b2b.common_errors import render
+
+        sections = render()
 
 with right:
-    render_section_sidebar()
+    from components.section_sidebar import render_section_sidebar
+    render_section_sidebar(sections)
