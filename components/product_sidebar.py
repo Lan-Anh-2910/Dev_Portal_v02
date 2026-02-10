@@ -22,11 +22,11 @@ def render_product_sidebar():
                     st.session_state.product = "b2b"
                     st.session_state.page = key
 
-        with st.expander("Bill"):
+        with st.expander("Cross-border"):
             st.caption("Coming soon")
 
         with st.expander("Leadgen"):
             st.caption("Coming soon")
 
-        with st.expander("Cross-border"):
+        with st.expander("Bill"):
             st.caption("Coming soon")
