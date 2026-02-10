@@ -29,4 +29,7 @@ def render_product_sidebar():
             st.caption("Coming soon")
 
         with st.expander("Cross-border"):
-            st.caption("Coming soon")
+            for key, label in PAGES:
+                if st.button(label, use_container_width=True):
+                    st.session_state.product = "cb"
+                    st.session_state.page = key
