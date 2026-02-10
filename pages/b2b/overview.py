@@ -11,10 +11,6 @@ def render():
     ]
 
     # ===== LAYOUT =====
-    center, right = st.columns([4.5, 1.5])
-
-    with right:
-        render_section_sidebar(sections)
 
     with center:
         # ===== PAGE TITLE =====
