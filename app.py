@@ -40,3 +40,6 @@ with center:
             from pages.b2b.common_errors import render
 
         sections = render()
+with right:
+    if sections:
+        render_section_sidebar(sections)
