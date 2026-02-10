@@ -40,6 +40,28 @@ with center:
             from pages.b2b.common_errors import render
 
         sections = render()
+    if st.session_state.product == "cb":
+        page = st.session_state.page
+
+        if page == "overview":
+            from pages.cb.overview import render
+        elif page == "integration_methods":
+            from pages.cb.integration_methods import render
+        elif page == "sandbox":
+            from pages.cb.sandbox import render
+        elif page == "api_reference":
+            from pages.cb.api_reference import render
+        elif page == "security":
+            from pages.cb.security import render
+        elif page == "sdks":
+            from pages.cb.sdks import render
+        elif page == "webhook":
+            from pages.cb.webhook import render
+        elif page == "timeout_handling":
+            from pages.cb.timeout_handling import render
+        elif page == "common_errors":
+            from pages.cb.common_errors import render
+        sections = render()
 
 with right:
     from components.section_sidebar import render_section_sidebar
