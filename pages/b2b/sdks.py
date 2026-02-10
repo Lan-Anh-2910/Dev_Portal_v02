@@ -8,7 +8,7 @@ def render():
     st.title("B2B / SDKs")
 
     st.markdown('<a id="auth"></a>', unsafe_allow_html=True)
-    st.header("Authentication mechanism")
+    st.header("Supported languages")
     st.write("B2B APIs use API Key and Secret Key for authentication.")
 
     return sections
