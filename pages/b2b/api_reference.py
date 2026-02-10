@@ -1,70 +1,55 @@
 import streamlit as st
-from components.section_sidebar import render_section_sidebar
-
 
 def render():
-    center, right = st.columns([4.5, 1.5])
+    st.title("B2B / API Reference")
 
-    with center:
-        st.title("B2B / API Reference")
+    st.write("""
+    This section provides detailed API references for B2B products.
+    APIs are grouped by merchant type and integration method.
+    """)
 
-        # ===== TAB LEVEL 1 =====
-        merchant_tabs = st.tabs(["Direct Merchant", "Master Merchant"])
+    # ========= DIRECT MERCHANT =========
+    with st.expander("Direct Merchant", expanded=True):
 
-        with merchant_tabs[0]:
-            merchant_type = "Direct Merchant"
+        # ----- BASIC / PRO -----
+        with st.expander("Basic / Pro Method"):
+            render_api_group()
 
-        with merchant_tabs[1]:
-            merchant_type = "Master Merchant"
+        # ----- H2H -----
+        with st.expander("Host-to-Host (H2H)"):
+            render_api_group(h2h=True)
 
-        # ===== TAB LEVEL 2 =====
-        method_tabs = st.tabs(["Basic / Pro", "H2H"])
+    # ========= MASTER MERCHANT =========
+    with st.expander("Master Merchant"):
 
-        with method_tabs[0]:
-            method_type = "Basic / Pro"
+        # ----- BASIC / PRO -----
+        with st.expander("Basic / Pro Method"):
+            render_api_group()
 
-        with method_tabs[1]:
-            method_type = "H2H"
+        # ----- H2H -----
+        with st.expander("Host-to-Host (H2H)"):
+            render_api_group(h2h=True)
 
-        st.caption(f"{merchant_type} · {method_type}")
+    # ❌ API Reference không dùng Sections sidebar
+    return []
 
-        # ===== API CONTENT =====
-        sections = []
 
-        def api_section(title, desc):
-            anchor = title.lower().replace(" ", "-")
-            st.markdown(f'<a id="{anchor}"></a>', unsafe_allow_html=True)
-            st.header(title)
-            st.write(desc)
-            sections.append({"label": title, "id": anchor})
+def render_api_group(h2h=False):
+    apis = [
+        "Authenticate Merchant",
+        "Create Order",
+        "Query Order",
+        "Webhook",
+        "Refund",
+        "Cancel"
+    ]
 
-        api_section(
-            "Authenticate Merchant",
-            "Authenticate merchant using API Key and Signature."
-        )
-
-        api_section(
-            "Create Order",
-            "Create a new payment order with amount and reference ID."
-        )
-
-        api_section(
-            "Query Order",
-            "Retrieve order status using order ID."
-        )
-
-        api_section(
-            "Webhook",
-            "Receive payment status updates via server-to-server callback."
-        )
-
-        api_section(
-            "Refund",
-            "Refund a successful transaction partially or fully."
-        )
-
-        api_section(
-            "Cancel",
-            "Cancel an unpaid or pending transaction."
-        )
-
+    for api in apis:
+        with st.expander(api):
+            st.markdown(f"**Endpoint**: `/v1/{api.lower().replace(' ', '-')}`")
+            st.markdown("**Method**: POST")
+            st.markdown("**Description**:")
+            st.write(
+                "H2H integration API." if h2h
+                else "Standard REST API for merchants."
+            )
