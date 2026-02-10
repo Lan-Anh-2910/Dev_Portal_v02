@@ -28,5 +28,5 @@ def render_product_sidebar():
         with st.expander("Leadgen"):
             st.caption("Coming soon")
 
-        with st.expander("Leadgen"):
+        with st.expander("Cross-border"):
             st.caption("Coming soon")
