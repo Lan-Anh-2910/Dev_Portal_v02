@@ -68,6 +68,3 @@ def render():
             "Cancel an unpaid or pending transaction."
         )
 
-    # ===== SECTIONS SIDEBAR =====
-    with right:
-        render_section_sidebar(sections)
