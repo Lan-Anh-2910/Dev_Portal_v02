@@ -1,37 +1,13 @@
 import streamlit as st
 
-ENDPOINTS = [
-    ("POST", "Authenticate Merchant"),
-    ("POST", "Create Order"),
-    ("GET", "Query Order"),
-    ("POST", "Webhook"),
-    ("POST", "Refund"),
-    ("POST", "Cancel"),
+BASIC_PRO_ENDPOINTS = [
+    "Authenticate Merchant",
+    "Create Order",
+    "Query Order",
+    "Webhook",
+    "Refund",
+    "Cancel",
 ]
-
-
-def method_badge(method):
-    colors = {
-        "GET": "#0d6efd",
-        "POST": "#198754",
-        "PUT": "#fd7e14",
-        "DELETE": "#dc3545",
-    }
-    color = colors.get(method, "#6c757d")
-
-    return f"""
-    <span style="
-        background-color:{color};
-        color:white;
-        padding:2px 6px;
-        border-radius:4px;
-        font-size:11px;
-        margin-right:6px;
-    ">
-    {method}
-    </span>
-    """
-
 
 def render_product_sidebar():
     with st.sidebar:
@@ -43,12 +19,15 @@ def render_product_sidebar():
         # =========================
         with st.expander("B2B", expanded=True):
 
-            # Normal pages
+            # Top pages
             if st.button("Overview", use_container_width=True):
                 st.session_state.page = "overview"
 
             if st.button("Integration Methods", use_container_width=True):
                 st.session_state.page = "integration_methods"
+
+            if st.button("Sandbox", use_container_width=True):
+                st.session_state.page = "sandbox"
 
             if st.button("API Reference", use_container_width=True):
                 st.session_state.page = "api_reference"
@@ -56,37 +35,44 @@ def render_product_sidebar():
             st.divider()
 
             # =========================
-            # API Reference v02 TREE
+            # API Reference v02
             # =========================
             with st.expander("API Reference v02", expanded=True):
 
                 st.markdown("**Direct MRC**")
 
-                # -------- Basic / Pro --------
+                # ---- Basic / Pro
                 with st.expander("Basic / Pro", expanded=True):
 
-                    for method, ep in ENDPOINTS:
+                    for ep in BASIC_PRO_ENDPOINTS:
+                        if st.button(ep, key=f"v02_{ep}", use_container_width=True):
+                            st.session_state.page = "api_reference_v02"
+                            st.session_state.v02_mode = "basic"
+                            st.session_state.v02_endpoint = ep
 
-                        col1, col2 = st.columns([1, 5])
+            st.divider()
 
-                        with col1:
-                            st.markdown(
-                                method_badge(method),
-                                unsafe_allow_html=True
-                            )
+            # =========================
+            # KEEP ORIGINAL SECTIONS
+            # =========================
+            if st.button("Security", use_container_width=True):
+                st.session_state.page = "security"
 
-                        with col2:
-                            if st.button(ep, key=f"v02_{ep}"):
-                                st.session_state.page = "api_reference_v02"
-                                st.session_state.v02_mode = "basic"
-                                st.session_state.v02_endpoint = ep
+            if st.button("SDKs", use_container_width=True):
+                st.session_state.page = "sdks"
 
-                # -------- H2H --------
-                if st.button("H2H"):
-                    st.session_state.page = "api_reference_v02"
-                    st.session_state.v02_mode = "h2h"
+            if st.button("Webhook", use_container_width=True):
+                st.session_state.page = "webhook"
 
+            if st.button("Timeout handling", use_container_width=True):
+                st.session_state.page = "timeout_handling"
+
+            if st.button("Common Errors", use_container_width=True):
+                st.session_state.page = "common_errors"
+
+        # =========================
         # Other products
+        # =========================
         with st.expander("Cross-border"):
             st.caption("Coming soon")
 
