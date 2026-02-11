@@ -14,7 +14,7 @@ render_product_sidebar()
 render_breadcrumb(st.session_state.product, st.session_state.page)
 
 # layout
-center, right = st.columns([4.5, 1.5])
+center, right = st.columns([5.0, 1.0])
 
 with center:
     if st.session_state.product == "b2b":
