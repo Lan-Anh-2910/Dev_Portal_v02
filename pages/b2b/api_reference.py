@@ -14,19 +14,19 @@ def render():
     ]
 
     # =========================
-    # Filters (Business Model / Integration)
+    # Filters
     # =========================
     col1, col2 = st.columns(2)
 
     with col1:
-        business_model = st.selectbox(
+        st.selectbox(
             "Business Model",
             ["Direct Merchant", "Marketplace", "Partner"],
             key="b2b_business_model"
         )
 
     with col2:
-        integration_type = st.selectbox(
+        st.selectbox(
             "Integration",
             ["Basic / Pro", "Host to Host (H2H)"],
             key="b2b_integration_type"
@@ -35,56 +35,62 @@ def render():
     st.divider()
 
     # =========================
-    # LEFT API ENDPOINT MENU
+    # Split inside center
     # =========================
-    st.markdown("### API Endpoints")
-
-    endpoints = [
-        "Authenticate Merchant",
-        "Create Order",
-        "Query Order",
-        "Webhook",
-        "Refund",
-        "Cancel",
-    ]
-
-    selected_endpoint = st.radio(
-        "",
-        endpoints,
-        index=1,
-        key="b2b_selected_endpoint"
-    )
-
-    st.divider()
+    col_left, col_main = st.columns([1.2, 3])
 
     # =========================
-    # MAIN CONTENT
+    # LEFT – API Endpoints
     # =========================
-    if selected_endpoint == "Create Order":
+    with col_left:
+        st.markdown("### API Endpoints")
 
-        st.markdown("## Create Order API")
+        endpoints = [
+            "Authenticate Merchant",
+            "Create Order",
+            "Query Order",
+            "Webhook",
+            "Refund",
+            "Cancel",
+        ]
 
-        st.markdown("### Flow")
-        st.write("Initiate a new order request.")
+        selected_endpoint = st.radio(
+            "",
+            endpoints,
+            index=1,
+            key="b2b_selected_endpoint"
+        )
 
-        st.markdown("### URL")
-        st.code("POST /v1/orders/create", language="bash")
+    # =========================
+    # RIGHT – API Detail
+    # =========================
+    with col_main:
 
-        st.markdown("### Method")
-        st.markdown("""
+        if selected_endpoint == "Create Order":
+
+            st.markdown("## Create Order API")
+
+            st.markdown("### Flow")
+            st.write("Initiate a new order request.")
+
+            st.markdown("### URL")
+            st.code("POST /v1/orders/create", language="bash")
+
+            st.markdown("### Method")
+            st.markdown("""
 - **POST**
 - Authorization: Bearer `{API_KEY}`
 - Content-Type: application/json
 """)
 
-        st.markdown("### Parameters")
-        st.markdown("""
+            st.markdown("### Parameters")
+            st.markdown("""
 - **amount** *(int, required)* – Order amount in cents  
 - **currency** *(string, required)* – Currency code (e.g., 'USD')  
 """)
 
-        st.markdown("### Request Example")
-        st.code("""
+            st.markdown("### Request Example")
+            st.code("""
 {
   "amount": 1000,
   "currency": "USD",
@@ -93,8 +99,8 @@ def render():
 }
 """, language="json")
 
-        st.markdown("### Response Example")
-        st.code("""
+            st.markdown("### Response Example")
+            st.code("""
 {
   "order_id": "ord_abc123",
   "status": "success",
@@ -102,8 +108,8 @@ def render():
 }
 """, language="json")
 
-        st.markdown("### Error Codes")
-        st.markdown("""
+            st.markdown("### Error Codes")
+            st.markdown("""
 | Code | Description |
 |------|-------------|
 | 4001 | Invalid amount |
@@ -111,8 +117,8 @@ def render():
 | 4010 | Unauthorized |
 """)
 
-    else:
-        st.markdown(f"## {selected_endpoint}")
-        st.info("Content coming soon...")
+        else:
+            st.markdown(f"## {selected_endpoint}")
+            st.info("Content coming soon...")
 
     return sections
