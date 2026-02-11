@@ -60,8 +60,9 @@ def render():
         {"label": "Flow", "id": "flow", "level": 2},
         {"label": "URL", "id": "url", "level": 2},
         {"label": "Method", "id": "method", "level": 2},
-        {"label": "Request Body", "id": "request-body", "level": 2},
+        {"label": "Request", "id": "request", "level": 2},
         {"label": "Response", "id": "response", "level": 2},
+        {"label": "Error Codes", "id": "error_codes", "level": 2}
     ]
 
     # =========================
@@ -83,8 +84,8 @@ def render():
         st.markdown("<h2 id='method'>Method</h2>", unsafe_allow_html=True)
         st.write("POST")
 
-        # ----- Request Body -----
-        st.markdown("<h2 id='request-body'>Request Body</h2>", unsafe_allow_html=True)
+        # ----- Request -----
+        st.markdown("<h2 id='request'>Request </h2>", unsafe_allow_html=True)
         st.code(
             """{
   "merchant_id": "string",
@@ -104,5 +105,30 @@ def render():
 }""",
             language="json"
         )
+
+    # ----- Error Codes -----
+st.markdown("<h2 id='error-codes'>Error Codes</h2>", unsafe_allow_html=True)
+st.code(
+    """{
+  "error_code": "INVALID_SIGNATURE",
+  "message": "The provided signature is invalid."
+}
+
+{
+  "error_code": "UNAUTHORIZED",
+  "message": "API key is missing or incorrect."
+}
+
+{
+  "error_code": "INVALID_PARAMS",
+  "message": "Required parameters are missing or invalid."
+}
+
+{
+  "error_code": "SYSTEM_ERROR",
+  "message": "Internal server error. Please try again later."
+}""",
+    language="json"
+)
 
     return sections
