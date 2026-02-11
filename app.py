@@ -7,7 +7,7 @@ if "product" not in st.session_state:
     st.session_state.product = "b2b"
 if "page" not in st.session_state:
     st.session_state.page = "overview"
-
+    
 st.set_page_config(layout="wide")
 
 render_product_sidebar()
