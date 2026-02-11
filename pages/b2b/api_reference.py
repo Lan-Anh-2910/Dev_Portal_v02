@@ -1,11 +1,10 @@
 import streamlit as st
-from components.section_sidebar import render_section_sidebar
 
 
-def render_api_reference():
+def render():
 
     # =========================
-    # 1️⃣ Khai báo sections
+    # 1️⃣ Sections cho sidebar phải
     # =========================
     sections = [
         {"label": "Flow", "id": "flow", "level": 2},
@@ -16,12 +15,12 @@ def render_api_reference():
     ]
 
     # =========================
-    # 2️⃣ Layout 3 cột
+    # 2️⃣ Layout trong center (app.py đã chia center/right)
     # =========================
-    col_left, col_main, col_right = st.columns([1.2, 3, 1.2])
+    col_left, col_main = st.columns([1.2, 3])
 
     # =========================
-    # 3️⃣ CỘT TRÁI – API ENDPOINTS
+    # CỘT TRÁI – API ENDPOINTS
     # =========================
     with col_left:
         st.markdown("### API Endpoints")
@@ -39,13 +38,7 @@ def render_api_reference():
             st.markdown(f"- {ep}")
 
     # =========================
-    # 4️⃣ CỘT PHẢI – SECTIONS
-    # =========================
-    with col_right:
-        render_section_sidebar(sections)
-
-    # =========================
-    # 5️⃣ NỘI DUNG CHÍNH
+    # CỘT PHẢI – NỘI DUNG
     # =========================
     with col_main:
 
@@ -84,3 +77,5 @@ def render_api_reference():
 }""",
             language="json"
         )
+
+    return sections
