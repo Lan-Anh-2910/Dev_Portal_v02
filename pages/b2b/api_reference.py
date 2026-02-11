@@ -3,14 +3,14 @@ import streamlit as st
 def render():
 
     sections = [
-        "Flow",
-        "URL",
-        "Method",
-        "Headers",
-        "Parameters",
-        "Request Example",
-        "Response Example",
-        "Error Codes",
+        {"title": "Flow", "level": 2},
+        {"title": "URL", "level": 2},
+        {"title": "Method", "level": 2},
+        {"title": "Headers", "level": 2},
+        {"title": "Parameters", "level": 2},
+        {"title": "Request Example", "level": 2},
+        {"title": "Response Example", "level": 2},
+        {"title": "Error Codes", "level": 2},
     ]
 
     # =========================
