@@ -4,7 +4,57 @@ import streamlit as st
 def render():
 
     # =========================
-    # 1️⃣ Sections cho sidebar phải
+    # 1️⃣ Business Model + Integration (giữ lại)
+    # =========================
+    col_filter1, col_filter2 = st.columns(2)
+
+    with col_filter1:
+        business_model = st.selectbox(
+            "Business Model",
+            ["Direct Merchant", "Marketplace", "Partner"],
+            key="b2b_business_model"
+        )
+
+    with col_filter2:
+        integration_type = st.selectbox(
+            "Integration",
+            ["Basic / Pro", "Host to Host (H2H)"],
+            key="b2b_integration_type"
+        )
+
+    st.divider()
+
+    # =========================
+    # 2️⃣ Layout trong center
+    # =========================
+    col_left, col_main = st.columns([1.2, 3])
+
+    # =========================
+    # 3️⃣ API Endpoints – CLICK ĐƯỢC
+    # =========================
+    endpoints = [
+        "Authenticate Merchant",
+        "Create Order",
+        "Query Order",
+        "Webhook",
+        "Refund",
+        "Cancel"
+    ]
+
+    if "b2b_selected_endpoint" not in st.session_state:
+        st.session_state.b2b_selected_endpoint = "Create Order"
+
+    with col_left:
+        st.markdown("### API Endpoints")
+
+        selected_endpoint = st.radio(
+            "",
+            endpoints,
+            key="b2b_selected_endpoint"
+        )
+
+    # =========================
+    # 4️⃣ Sections cho sidebar phải
     # =========================
     sections = [
         {"label": "Flow", "id": "flow", "level": 2},
@@ -15,38 +65,15 @@ def render():
     ]
 
     # =========================
-    # 2️⃣ Layout trong center (app.py đã chia center/right)
-    # =========================
-    col_left, col_main = st.columns([1.2, 3])
-
-    # =========================
-    # CỘT TRÁI – API ENDPOINTS
-    # =========================
-    with col_left:
-        st.markdown("### API Endpoints")
-
-        endpoints = [
-            "Authenticate Merchant",
-            "Create Order",
-            "Query Order",
-            "Webhook",
-            "Refund",
-            "Cancel"
-        ]
-
-        for ep in endpoints:
-            st.markdown(f"- {ep}")
-
-    # =========================
-    # CỘT PHẢI – NỘI DUNG
+    # 5️⃣ Content chính
     # =========================
     with col_main:
 
-        st.markdown("# Create Order API")
+        st.markdown(f"# {selected_endpoint} API")
 
         # ----- Flow -----
         st.markdown("<h2 id='flow'>Flow</h2>", unsafe_allow_html=True)
-        st.write("Initiate a new order request.")
+        st.write(f"This is the flow description for {selected_endpoint}.")
 
         # ----- URL -----
         st.markdown("<h2 id='url'>URL</h2>", unsafe_allow_html=True)
