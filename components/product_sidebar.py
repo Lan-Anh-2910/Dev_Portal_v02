@@ -1,6 +1,6 @@
 import streamlit as st
 
-BASIC_PRO_ENDPOINTS = [
+ENDPOINTS = [
     "Authenticate Merchant",
     "Create Order",
     "Query Order",
@@ -8,6 +8,7 @@ BASIC_PRO_ENDPOINTS = [
     "Refund",
     "Cancel",
 ]
+
 
 def render_product_sidebar():
     with st.sidebar:
@@ -19,7 +20,7 @@ def render_product_sidebar():
         # =========================
         with st.expander("B2B", expanded=True):
 
-            # Top pages
+            # ----- Top Pages -----
             if st.button("Overview", use_container_width=True):
                 st.session_state.page = "overview"
 
@@ -39,22 +40,71 @@ def render_product_sidebar():
             # =========================
             with st.expander("API Reference v02", expanded=True):
 
-                st.markdown("**Direct MRC**")
+                # ====================================
+                # DIRECT MRC
+                # ====================================
+                with st.expander("Direct MRC", expanded=False):
 
-                # ---- Basic / Pro
-                with st.expander("Basic / Pro", expanded=True):
+                    # Basic / Pro
+                    with st.expander("Basic / Pro", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"direct_basic_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "direct"
+                                st.session_state.v02_mode = "basic"
+                                st.session_state.v02_endpoint = ep
 
-                    for ep in BASIC_PRO_ENDPOINTS:
-                        if st.button(ep, key=f"v02_{ep}", use_container_width=True):
-                            st.session_state.page = "api_reference_v02"
-                            st.session_state.v02_mode = "basic"
-                            st.session_state.v02_endpoint = ep
+                    # H2H
+                    with st.expander("H2H", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"direct_h2h_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "direct"
+                                st.session_state.v02_mode = "h2h"
+                                st.session_state.v02_endpoint = ep
+
+                # ====================================
+                # MASTER MRC
+                # ====================================
+                with st.expander("Master MRC", expanded=False):
+
+                    # Basic / Pro
+                    with st.expander("Basic / Pro", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"master_basic_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "master"
+                                st.session_state.v02_mode = "basic"
+                                st.session_state.v02_endpoint = ep
+
+                    # H2H
+                    with st.expander("H2H", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"master_h2h_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "master"
+                                st.session_state.v02_mode = "h2h"
+                                st.session_state.v02_endpoint = ep
 
             st.divider()
 
-            # =========================
-            # KEEP ORIGINAL SECTIONS
-            # =========================
+            # ----- Other Sections (GIỮ NGUYÊN) -----
             if st.button("Security", use_container_width=True):
                 st.session_state.page = "security"
 
@@ -71,7 +121,7 @@ def render_product_sidebar():
                 st.session_state.page = "common_errors"
 
         # =========================
-        # Other products
+        # Other Products
         # =========================
         with st.expander("Cross-border"):
             st.caption("Coming soon")
