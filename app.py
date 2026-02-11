@@ -28,6 +28,8 @@ with center:
             from pages.b2b.sandbox import render
         elif page == "api_reference":
             from pages.b2b.api_reference import render
+        elif page == "api_reference_v02":
+            from pages.b2b.api_reference_v02 import render
         elif page == "security":
             from pages.b2b.security import render
         elif page == "sdks":
