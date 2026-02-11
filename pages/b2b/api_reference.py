@@ -11,7 +11,7 @@ def render():
     with col_filter1:
         business_model = st.selectbox(
             "Business Model",
-            ["Direct Merchant", "Marketplace", "Partner"],
+            ["Direct Merchant", "Master Merchant"],
             key="b2b_business_model"
         )
 
