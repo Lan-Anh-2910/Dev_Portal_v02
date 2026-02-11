@@ -1,40 +1,42 @@
 import streamlit as st
 
-# ===============================
-# Page Config
-# ===============================
-st.set_page_config(layout="wide")
+def render():
 
-# ===============================
-# Header
-# ===============================
-st.markdown("## B2B / API Reference")
+    sections = [
+        "Flow",
+        "URL",
+        "Method",
+        "Headers",
+        "Parameters",
+        "Request Example",
+        "Response Example",
+        "Error Codes",
+    ]
 
-col_filter1, col_filter2 = st.columns(2)
+    # =========================
+    # Filters (Business Model / Integration)
+    # =========================
+    col1, col2 = st.columns(2)
 
-with col_filter1:
-    business_model = st.selectbox(
-        "Business Model",
-        ["Direct Merchant", "Marketplace", "Partner"]
-    )
+    with col1:
+        business_model = st.selectbox(
+            "Business Model",
+            ["Direct Merchant", "Marketplace", "Partner"],
+            key="b2b_business_model"
+        )
 
-with col_filter2:
-    integration_type = st.selectbox(
-        "Integration",
-        ["Basic / Pro", "Host to Host (H2H)"]
-    )
+    with col2:
+        integration_type = st.selectbox(
+            "Integration",
+            ["Basic / Pro", "Host to Host (H2H)"],
+            key="b2b_integration_type"
+        )
 
-st.divider()
+    st.divider()
 
-# ===============================
-# Main 3-column Layout
-# ===============================
-col_left, col_main, col_right = st.columns([1, 3, 1])
-
-# =========================================
-# LEFT SIDEBAR – API ENDPOINTS
-# =========================================
-with col_left:
+    # =========================
+    # LEFT API ENDPOINT MENU
+    # =========================
     st.markdown("### API Endpoints")
 
     endpoints = [
@@ -49,19 +51,21 @@ with col_left:
     selected_endpoint = st.radio(
         "",
         endpoints,
-        index=1
+        index=1,
+        key="b2b_selected_endpoint"
     )
 
-# =========================================
-# MAIN CONTENT
-# =========================================
-with col_main:
+    st.divider()
 
+    # =========================
+    # MAIN CONTENT
+    # =========================
     if selected_endpoint == "Create Order":
 
         st.markdown("## Create Order API")
 
-        st.markdown("**Flow:** Initiate a new order request.")
+        st.markdown("### Flow")
+        st.write("Initiate a new order request.")
 
         st.markdown("### URL")
         st.code("POST /v1/orders/create", language="bash")
@@ -98,23 +102,17 @@ with col_main:
 }
 """, language="json")
 
+        st.markdown("### Error Codes")
+        st.markdown("""
+| Code | Description |
+|------|-------------|
+| 4001 | Invalid amount |
+| 4002 | Missing currency |
+| 4010 | Unauthorized |
+""")
+
     else:
         st.markdown(f"## {selected_endpoint}")
         st.info("Content coming soon...")
 
-# =========================================
-# RIGHT SIDEBAR – ON THIS PAGE
-# =========================================
-with col_right:
-    st.markdown("### On this page")
-
-    st.markdown("""
-- Flow
-- URL
-- Method
-- Headers
-- Parameters
-- Request Example
-- Response Example
-- Error Codes
-""")
+    return sections
