@@ -5,6 +5,7 @@ PAGES = [
     ("integration_methods", "Integration Methods"),
     ("sandbox", "Sandbox"),
     ("api_reference", "API Reference"),
+    ("api_reference_v02", "API Reference v02"),
     ("security", "Security"),
     ("sdks", "SDKs"),
     ("webhook", "Webhook"),
