@@ -62,7 +62,7 @@ def render():
         {"label": "Method", "id": "method", "level": 2},
         {"label": "Request", "id": "request", "level": 2},
         {"label": "Response", "id": "response", "level": 2},
-        {"label": "Error Codes", "id": "error_codes", "level": 2}
+        {"label": "Error Codes", "id": "error-codes", "level": 2}
     ]
 
     # =========================
