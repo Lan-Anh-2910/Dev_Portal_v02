@@ -1,84 +1,92 @@
 import streamlit as st
 
-PAGES = [
-    ("overview", "Overview"),
-    ("integration_methods", "Integration Methods"),
-    ("sandbox", "Sandbox"),
-    ("api_reference", "API Reference"),
-    ("security", "Security"),
-    ("sdks", "SDKs"),
-    ("webhook", "Webhook"),
-    ("timeout_handling", "Timeout handling"),
-    ("common_errors", "Common Errors"),
+ENDPOINTS = [
+    ("POST", "Authenticate Merchant"),
+    ("POST", "Create Order"),
+    ("GET", "Query Order"),
+    ("POST", "Webhook"),
+    ("POST", "Refund"),
+    ("POST", "Cancel"),
 ]
 
-ENDPOINTS = [
-    "Authenticate Merchant",
-    "Create Order",
-    "Query Order",
-    "Webhook",
-    "Refund",
-    "Cancel"
-]
+
+def method_badge(method):
+    colors = {
+        "GET": "#0d6efd",
+        "POST": "#198754",
+        "PUT": "#fd7e14",
+        "DELETE": "#dc3545",
+    }
+    color = colors.get(method, "#6c757d")
+
+    return f"""
+    <span style="
+        background-color:{color};
+        color:white;
+        padding:2px 6px;
+        border-radius:4px;
+        font-size:11px;
+        margin-right:6px;
+    ">
+    {method}
+    </span>
+    """
 
 
 def render_product_sidebar():
     with st.sidebar:
+
         st.subheader("Products")
 
+        # =========================
+        # B2B
+        # =========================
         with st.expander("B2B", expanded=True):
 
-            # ===============================
-            # NORMAL PAGES
-            # ===============================
-            for key, label in PAGES:
-                if st.button(label, use_container_width=True):
-                    st.session_state.product = "b2b"
-                    st.session_state.page = key
+            # Normal pages
+            if st.button("Overview", use_container_width=True):
+                st.session_state.page = "overview"
+
+            if st.button("Integration Methods", use_container_width=True):
+                st.session_state.page = "integration_methods"
+
+            if st.button("API Reference", use_container_width=True):
+                st.session_state.page = "api_reference"
 
             st.divider()
 
-            # ===============================
-            # API REFERENCE V02 TREE
-            # ===============================
-            st.markdown("### API Reference v02")
-
-            # State control
-            st.session_state.setdefault("v02_open", True)
-            st.session_state.setdefault("v02_basic_open", True)
-            st.session_state.setdefault("v02_mode", "basic")
-            st.session_state.setdefault("v02_endpoint", "Create Order")
-
-            # Root
-            if st.button("API Reference v02 ▾", use_container_width=True):
-                st.session_state.v02_open = not st.session_state.v02_open
-                st.session_state.page = "api_reference_v02"
-
-            if st.session_state.v02_open:
+            # =========================
+            # API Reference v02 TREE
+            # =========================
+            with st.expander("API Reference v02", expanded=True):
 
                 st.markdown("**Direct MRC**")
 
-                # ================= BASIC / PRO =================
-                if st.button("↳ Basic / Pro ▾", use_container_width=True):
-                    st.session_state.v02_basic_open = not st.session_state.v02_basic_open
-                    st.session_state.v02_mode = "basic"
-                    st.session_state.page = "api_reference_v02"
+                # -------- Basic / Pro --------
+                with st.expander("Basic / Pro", expanded=True):
 
-                if st.session_state.v02_basic_open:
+                    for method, ep in ENDPOINTS:
 
-                    for ep in ENDPOINTS:
-                        if st.button(f"    • {ep}", use_container_width=True):
-                            st.session_state.product = "b2b"
-                            st.session_state.page = "api_reference_v02"
-                            st.session_state.v02_mode = "basic"
-                            st.session_state.v02_endpoint = ep
+                        col1, col2 = st.columns([1, 5])
 
-                # ================= H2H =================
-                if st.button("↳ H2H", use_container_width=True):
-                    st.session_state.product = "b2b"
+                        with col1:
+                            st.markdown(
+                                method_badge(method),
+                                unsafe_allow_html=True
+                            )
+
+                        with col2:
+                            if st.button(ep, key=f"v02_{ep}"):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_mode = "basic"
+                                st.session_state.v02_endpoint = ep
+
+                # -------- H2H --------
+                if st.button("H2H"):
                     st.session_state.page = "api_reference_v02"
                     st.session_state.v02_mode = "h2h"
 
+        # Other products
         with st.expander("Cross-border"):
             st.caption("Coming soon")
 
