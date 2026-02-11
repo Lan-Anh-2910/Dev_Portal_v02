@@ -106,29 +106,29 @@ def render():
             language="json"
         )
 
-    # ----- Error Codes -----
-st.markdown("<h2 id='error-codes'>Error Codes</h2>", unsafe_allow_html=True)
-st.code(
-    """{
-  "error_code": "INVALID_SIGNATURE",
-  "message": "The provided signature is invalid."
-}
-
-{
-  "error_code": "UNAUTHORIZED",
-  "message": "API key is missing or incorrect."
-}
-
-{
-  "error_code": "INVALID_PARAMS",
-  "message": "Required parameters are missing or invalid."
-}
-
-{
-  "error_code": "SYSTEM_ERROR",
-  "message": "Internal server error. Please try again later."
-}""",
-    language="json"
-)
+        # ----- Error Codes -----
+    st.markdown("<h2 id='error-codes'>Error Codes</h2>", unsafe_allow_html=True)
+    st.code(
+        """{
+      "error_code": "INVALID_SIGNATURE",
+      "message": "The provided signature is invalid."
+    }
+    
+    {
+      "error_code": "UNAUTHORIZED",
+      "message": "API key is missing or incorrect."
+    }
+    
+    {
+      "error_code": "INVALID_PARAMS",
+      "message": "Required parameters are missing or invalid."
+    }
+    
+    {
+      "error_code": "SYSTEM_ERROR",
+      "message": "Internal server error. Please try again later."
+    }""",
+        language="json"
+    )
 
     return sections
