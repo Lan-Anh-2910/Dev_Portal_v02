@@ -77,7 +77,6 @@ def render_product_sidebar():
                 if st.button("API Reference", key="api_ref_btn"):
                     st.session_state.page = "api_reference"
 
-            st.divider()
 
             # =========================
             # API Reference v02
