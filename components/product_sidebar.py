@@ -11,111 +11,123 @@ ENDPOINTS = [
 
 
 def render_product_sidebar():
+    with st.sidebar:
 
-    # Sync URL param nếu có
-    params = st.query_params
-    if "page" in params:
-        st.session_state.page = params["page"]
+        st.subheader("Products")
 
-    # ===============================
-    # CLEAN SIDEBAR STYLE
-    # ===============================
-    st.sidebar.markdown("""
-    <style>
+        # =========================
+        # B2B
+        # =========================
+        with st.expander("B2B", expanded=True):
 
-    section[data-testid="stSidebar"] {
-        background-color: #ffffff;
-        padding-top: 20px;
-    }
+            # ----- Top Pages -----
+            if st.button("Overview", use_container_width=True):
+                st.session_state.page = "overview"
 
-    .menu-title {
-        font-size: 13px;
-        font-weight: 600;
-        color: #6b7280;
-        margin: 18px 0 8px 0;
-    }
+            if st.button("Integration Methods", use_container_width=True):
+                st.session_state.page = "integration_methods"
 
-    .menu-item {
-        padding: 6px 12px;
-        font-size: 14px;
-        color: #1f2937;
-        text-decoration: none;
-        display: block;
-        border-left: 3px solid transparent;
-    }
+            if st.button("Sandbox", use_container_width=True):
+                st.session_state.page = "sandbox"
 
-    .menu-item:hover {
-        background-color: #f3f4f6;
-    }
+            if st.button("API Reference", use_container_width=True):
+                st.session_state.page = "api_reference"
 
-    .active {
-        border-left: 3px solid #fbbf24;
-        background-color: #f9fafb;
-        font-weight: 500;
-    }
+            st.divider()
 
-    .submenu {
-        margin-left: 15px;
-    }
+            # =========================
+            # API Reference v02
+            # =========================
+            with st.expander("API Reference v02", expanded=True):
 
-    </style>
-    """, unsafe_allow_html=True)
+                # ====================================
+                # DIRECT MRC
+                # ====================================
+                with st.expander("Direct MRC", expanded=False):
 
-    st.sidebar.markdown("### Products")
+                    # Basic / Pro
+                    with st.expander("Basic / Pro", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"direct_basic_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "direct"
+                                st.session_state.v02_mode = "basic"
+                                st.session_state.v02_endpoint = ep
 
-    # =========================
-    # B2B
-    # =========================
+                    # H2H
+                    with st.expander("H2H", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"direct_h2h_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "direct"
+                                st.session_state.v02_mode = "h2h"
+                                st.session_state.v02_endpoint = ep
 
-    st.sidebar.markdown('<div class="menu-title">B2B</div>', unsafe_allow_html=True)
+                # ====================================
+                # MASTER MRC
+                # ====================================
+                with st.expander("Master MRC", expanded=False):
 
-    main_pages = {
-        "overview": "Overview",
-        "integration_methods": "Integration Methods",
-        "sandbox": "Sandbox",
-        "api_reference": "API Reference",
-        "security": "Security",
-        "sdks": "SDKs",
-        "webhook": "Webhook",
-        "timeout_handling": "Timeout Handling",
-        "common_errors": "Common Errors",
-    }
+                    # Basic / Pro
+                    with st.expander("Basic / Pro", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"master_basic_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "master"
+                                st.session_state.v02_mode = "basic"
+                                st.session_state.v02_endpoint = ep
 
-    for key, label in main_pages.items():
+                    # H2H
+                    with st.expander("H2H", expanded=False):
+                        for ep in ENDPOINTS:
+                            if st.button(
+                                ep,
+                                key=f"master_h2h_{ep}",
+                                use_container_width=True,
+                            ):
+                                st.session_state.page = "api_reference_v02"
+                                st.session_state.v02_type = "master"
+                                st.session_state.v02_mode = "h2h"
+                                st.session_state.v02_endpoint = ep
 
-        active = "active" if st.session_state.page == key else ""
+            st.divider()
 
-        st.sidebar.markdown(
-            f'<a href="?page={key}" class="menu-item {active}">{label}</a>',
-            unsafe_allow_html=True
-        )
+            # ----- Other Sections (GIỮ NGUYÊN) -----
+            if st.button("Security", use_container_width=True):
+                st.session_state.page = "security"
 
-    # =========================
-    # API v02
-    # =========================
+            if st.button("SDKs", use_container_width=True):
+                st.session_state.page = "sdks"
 
-    st.sidebar.markdown('<div class="menu-title">API Reference v02</div>', unsafe_allow_html=True)
+            if st.button("Webhook", use_container_width=True):
+                st.session_state.page = "webhook"
 
-    # DIRECT
-    st.sidebar.markdown('<div class="submenu"><b>Direct MRC</b></div>', unsafe_allow_html=True)
+            if st.button("Timeout handling", use_container_width=True):
+                st.session_state.page = "timeout_handling"
 
-    st.sidebar.markdown('<div class="submenu submenu"><b>Basic / Pro</b></div>', unsafe_allow_html=True)
+            if st.button("Common Errors", use_container_width=True):
+                st.session_state.page = "common_errors"
 
-    for ep in ENDPOINTS:
-        page_key = f"direct_basic_{ep}"
-        active = ""
+        # =========================
+        # Other Products
+        # =========================
+        with st.expander("Cross-border"):
+            st.caption("Coming soon")
 
-        if (
-            st.session_state.page == "api_reference_v02"
-            and st.session_state.get("v02_type") == "direct"
-            and st.session_state.get("v02_mode") == "basic"
-            and st.session_state.get("v02_endpoint") == ep
-        ):
-            active = "active"
+        with st.expander("Leadgen"):
+            st.caption("Coming soon")
 
-        st.sidebar.markdown(
-            f'<a href="?page=api_reference_v02&type=direct&mode=basic&ep={ep}" class="menu-item submenu submenu {active}">{ep}</a>',
-            unsafe_allow_html=True
-        )
-
-    # Bạn có thể nhân đôi block này cho H2H và Master giống logic trên
+        with st.expander("Bill"):
+            st.caption("Coming soon")
