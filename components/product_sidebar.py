@@ -12,108 +12,110 @@ ENDPOINTS = [
 
 def render_product_sidebar():
 
+    # Sync URL param nếu có
+    params = st.query_params
+    if "page" in params:
+        st.session_state.page = params["page"]
+
     # ===============================
     # CLEAN SIDEBAR STYLE
     # ===============================
     st.sidebar.markdown("""
     <style>
-    section[data-testid="stSidebar"] .stRadio > div {
-        gap: 0px;
+
+    section[data-testid="stSidebar"] {
+        background-color: #ffffff;
+        padding-top: 20px;
     }
 
-    section[data-testid="stSidebar"] .stRadio label {
+    .menu-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
+        margin: 18px 0 8px 0;
+    }
+
+    .menu-item {
         padding: 6px 12px;
-        margin: 0px;
-        border-left: 3px solid transparent;
         font-size: 14px;
+        color: #1f2937;
+        text-decoration: none;
+        display: block;
+        border-left: 3px solid transparent;
     }
 
-    section[data-testid="stSidebar"] .stRadio label:hover {
+    .menu-item:hover {
         background-color: #f3f4f6;
     }
 
-    section[data-testid="stSidebar"] input[type="radio"] {
-        display: none;
-    }
-
-    section[data-testid="stSidebar"] .stRadio label[data-checked="true"] {
+    .active {
         border-left: 3px solid #fbbf24;
         background-color: #f9fafb;
         font-weight: 500;
     }
+
+    .submenu {
+        margin-left: 15px;
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
     st.sidebar.markdown("### Products")
 
-    with st.sidebar.expander("B2B", expanded=True):
+    # =========================
+    # B2B
+    # =========================
 
-        # ======================
-        # MAIN NAV
-        # ======================
+    st.sidebar.markdown('<div class="menu-title">B2B</div>', unsafe_allow_html=True)
 
-        main_pages = [
-            "overview",
-            "integration_methods",
-            "sandbox",
-            "api_reference",
-            "security",
-            "sdks",
-            "webhook",
-            "timeout_handling",
-            "common_errors",
-        ]
+    main_pages = {
+        "overview": "Overview",
+        "integration_methods": "Integration Methods",
+        "sandbox": "Sandbox",
+        "api_reference": "API Reference",
+        "security": "Security",
+        "sdks": "SDKs",
+        "webhook": "Webhook",
+        "timeout_handling": "Timeout Handling",
+        "common_errors": "Common Errors",
+    }
 
-        selected = st.radio(
-            "",
-            main_pages,
-            index=main_pages.index(st.session_state.page)
-            if st.session_state.page in main_pages
-            else 0,
-            format_func=lambda x: x.replace("_", " ").title(),
+    for key, label in main_pages.items():
+
+        active = "active" if st.session_state.page == key else ""
+
+        st.sidebar.markdown(
+            f'<a href="?page={key}" class="menu-item {active}">{label}</a>',
+            unsafe_allow_html=True
         )
 
-        st.session_state.page = selected
+    # =========================
+    # API v02
+    # =========================
 
-        st.divider()
+    st.sidebar.markdown('<div class="menu-title">API Reference v02</div>', unsafe_allow_html=True)
 
-        # ======================
-        # API v02 TREE
-        # ======================
+    # DIRECT
+    st.sidebar.markdown('<div class="submenu"><b>Direct MRC</b></div>', unsafe_allow_html=True)
 
-        with st.expander("API Reference v02", expanded=True):
+    st.sidebar.markdown('<div class="submenu submenu"><b>Basic / Pro</b></div>', unsafe_allow_html=True)
 
-            level1 = st.radio(
-                "Type",
-                ["direct", "master"],
-                horizontal=True,
-                key="v02_type_radio",
-            )
+    for ep in ENDPOINTS:
+        page_key = f"direct_basic_{ep}"
+        active = ""
 
-            level2 = st.radio(
-                "Mode",
-                ["basic", "h2h"],
-                horizontal=True,
-                key="v02_mode_radio",
-            )
+        if (
+            st.session_state.page == "api_reference_v02"
+            and st.session_state.get("v02_type") == "direct"
+            and st.session_state.get("v02_mode") == "basic"
+            and st.session_state.get("v02_endpoint") == ep
+        ):
+            active = "active"
 
-            selected_ep = st.radio(
-                "Endpoint",
-                ENDPOINTS,
-                key="v02_endpoint_radio",
-            )
+        st.sidebar.markdown(
+            f'<a href="?page=api_reference_v02&type=direct&mode=basic&ep={ep}" class="menu-item submenu submenu {active}">{ep}</a>',
+            unsafe_allow_html=True
+        )
 
-            st.session_state.page = "api_reference_v02"
-            st.session_state.v02_type = level1
-            st.session_state.v02_mode = level2
-            st.session_state.v02_endpoint = selected_ep
-
-    # Other products
-    with st.sidebar.expander("Cross-border"):
-        st.caption("Coming soon")
-
-    with st.sidebar.expander("Leadgen"):
-        st.caption("Coming soon")
-
-    with st.sidebar.expander("Bill"):
-        st.caption("Coming soon")
+    # Bạn có thể nhân đôi block này cho H2H và Master giống logic trên
