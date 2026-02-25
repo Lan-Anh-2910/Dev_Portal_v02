@@ -63,23 +63,23 @@ def render_product_sidebar():
         
         # Nội dung bên trong
         if st.session_state.b2b_open:
+
+            # tạo 2 cột: cột trái làm khoảng trống
+            col_space, col_content = st.columns([0.08, 0.92])
         
-            # wrapper div để lùi vào
-            st.markdown('<div class="submenu">', unsafe_allow_html=True)
+            with col_content:
         
-            if st.button("Overview", key="overview_btn"):
-                st.session_state.page = "overview"
+                if st.button("Overview", key="overview_btn", use_container_width=True):
+                    st.session_state.page = "overview"
         
-            if st.button("Integration Methods", key="integration_btn"):
-                st.session_state.page = "integration_methods"
+                if st.button("Integration Methods", key="integration_btn", use_container_width=True):
+                    st.session_state.page = "integration_methods"
         
-            if st.button("Sandbox", key="sandbox_btn"):
-                st.session_state.page = "sandbox"
+                if st.button("Sandbox", key="sandbox_btn", use_container_width=True):
+                    st.session_state.page = "sandbox"
         
-            if st.button("API Reference", key="api_ref_btn"):
-                st.session_state.page = "api_reference"
-        
-            st.markdown('</div>', unsafe_allow_html=True)
+                if st.button("API Reference", key="api_ref_btn", use_container_width=True):
+                    st.session_state.page = "api_reference"
             
             st.divider()
             # =========================
