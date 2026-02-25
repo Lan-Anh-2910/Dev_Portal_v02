@@ -13,151 +13,102 @@ ENDPOINTS = [
 def render_product_sidebar():
 
     # ===============================
-    # Custom CSS (PayPal style)
+    # CLEAN SIDEBAR STYLE
     # ===============================
     st.sidebar.markdown("""
     <style>
-    .menu-item {
-        padding: 6px 12px;
-        font-size: 14px;
-        cursor: pointer;
-        border-left: 3px solid transparent;
+    section[data-testid="stSidebar"] .stRadio > div {
+        gap: 0px;
     }
 
-    .menu-item:hover {
+    section[data-testid="stSidebar"] .stRadio label {
+        padding: 6px 12px;
+        margin: 0px;
+        border-left: 3px solid transparent;
+        font-size: 14px;
+    }
+
+    section[data-testid="stSidebar"] .stRadio label:hover {
         background-color: #f3f4f6;
     }
 
-    .active-item {
+    section[data-testid="stSidebar"] input[type="radio"] {
+        display: none;
+    }
+
+    section[data-testid="stSidebar"] .stRadio label[data-checked="true"] {
         border-left: 3px solid #fbbf24;
         background-color: #f9fafb;
         font-weight: 500;
     }
-
-    .menu-title {
-        font-size: 13px;
-        font-weight: 600;
-        color: #6b7280;
-        margin-top: 15px;
-        margin-bottom: 5px;
-    }
     </style>
     """, unsafe_allow_html=True)
-
-    # helper render
-    def nav_item(label, page=None, v02_type=None, v02_mode=None, v02_endpoint=None):
-
-        is_active = False
-
-        if page and st.session_state.page == page:
-            if page == "api_reference_v02":
-                if (
-                    st.session_state.get("v02_type") == v02_type
-                    and st.session_state.get("v02_mode") == v02_mode
-                    and st.session_state.get("v02_endpoint") == v02_endpoint
-                ):
-                    is_active = True
-            else:
-                is_active = True
-
-        css_class = "menu-item active-item" if is_active else "menu-item"
-
-        if st.sidebar.markdown(
-            f'<div class="{css_class}">{label}</div>',
-            unsafe_allow_html=True,
-        ):
-            if page:
-                st.session_state.page = page
-            if v02_type:
-                st.session_state.v02_type = v02_type
-            if v02_mode:
-                st.session_state.v02_mode = v02_mode
-            if v02_endpoint:
-                st.session_state.v02_endpoint = v02_endpoint
-
-    # =========================
-    # PRODUCTS
-    # =========================
 
     st.sidebar.markdown("### Products")
 
     with st.sidebar.expander("B2B", expanded=True):
 
-        nav_item("Overview", page="overview")
-        nav_item("Integration Methods", page="integration_methods")
-        nav_item("Sandbox", page="sandbox")
-        nav_item("API Reference", page="api_reference")
+        # ======================
+        # MAIN NAV
+        # ======================
+
+        main_pages = [
+            "overview",
+            "integration_methods",
+            "sandbox",
+            "api_reference",
+            "security",
+            "sdks",
+            "webhook",
+            "timeout_handling",
+            "common_errors",
+        ]
+
+        selected = st.radio(
+            "",
+            main_pages,
+            index=main_pages.index(st.session_state.page)
+            if st.session_state.page in main_pages
+            else 0,
+            format_func=lambda x: x.replace("_", " ").title(),
+        )
+
+        st.session_state.page = selected
 
         st.divider()
 
-        # =========================
-        # API Reference v02
-        # =========================
+        # ======================
+        # API v02 TREE
+        # ======================
 
         with st.expander("API Reference v02", expanded=True):
 
-            # DIRECT MRC
-            with st.expander("Direct MRC", expanded=False):
+            level1 = st.radio(
+                "Type",
+                ["direct", "master"],
+                horizontal=True,
+                key="v02_type_radio",
+            )
 
-                # Basic / Pro
-                with st.expander("Basic / Pro", expanded=False):
-                    for ep in ENDPOINTS:
-                        nav_item(
-                            ep,
-                            page="api_reference_v02",
-                            v02_type="direct",
-                            v02_mode="basic",
-                            v02_endpoint=ep,
-                        )
+            level2 = st.radio(
+                "Mode",
+                ["basic", "h2h"],
+                horizontal=True,
+                key="v02_mode_radio",
+            )
 
-                # H2H
-                with st.expander("H2H", expanded=False):
-                    for ep in ENDPOINTS:
-                        nav_item(
-                            ep,
-                            page="api_reference_v02",
-                            v02_type="direct",
-                            v02_mode="h2h",
-                            v02_endpoint=ep,
-                        )
+            selected_ep = st.radio(
+                "Endpoint",
+                ENDPOINTS,
+                key="v02_endpoint_radio",
+            )
 
-            # MASTER MRC
-            with st.expander("Master MRC", expanded=False):
+            st.session_state.page = "api_reference_v02"
+            st.session_state.v02_type = level1
+            st.session_state.v02_mode = level2
+            st.session_state.v02_endpoint = selected_ep
 
-                # Basic / Pro
-                with st.expander("Basic / Pro", expanded=False):
-                    for ep in ENDPOINTS:
-                        nav_item(
-                            ep,
-                            page="api_reference_v02",
-                            v02_type="master",
-                            v02_mode="basic",
-                            v02_endpoint=ep,
-                        )
-
-                # H2H
-                with st.expander("H2H", expanded=False):
-                    for ep in ENDPOINTS:
-                        nav_item(
-                            ep,
-                            page="api_reference_v02",
-                            v02_type="master",
-                            v02_mode="h2h",
-                            v02_endpoint=ep,
-                        )
-
-        st.divider()
-
-        nav_item("Security", page="security")
-        nav_item("SDKs", page="sdks")
-        nav_item("Webhook", page="webhook")
-        nav_item("Timeout handling", page="timeout_handling")
-        nav_item("Common Errors", page="common_errors")
-
-    # =========================
-    # Other Products
-    # =========================
-
+    # Other products
     with st.sidebar.expander("Cross-border"):
         st.caption("Coming soon")
 
