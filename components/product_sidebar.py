@@ -61,9 +61,11 @@ def render_product_sidebar():
         if st.button(f"{arrow} B2B", key="b2b_toggle"):
             st.session_state.b2b_open = not st.session_state.b2b_open
         
-        
         # Nội dung bên trong
         if st.session_state.b2b_open:
+        
+            # wrapper div để lùi vào
+            st.markdown('<div class="submenu">', unsafe_allow_html=True)
         
             if st.button("Overview", key="overview_btn"):
                 st.session_state.page = "overview"
@@ -76,7 +78,9 @@ def render_product_sidebar():
         
             if st.button("API Reference", key="api_ref_btn"):
                 st.session_state.page = "api_reference"
-
+        
+            st.markdown('</div>', unsafe_allow_html=True)
+            
             st.divider()
             # =========================
             # API Reference v02
