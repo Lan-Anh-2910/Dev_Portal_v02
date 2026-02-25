@@ -13,75 +13,28 @@ ENDPOINTS = [
 def render_product_sidebar():
     with st.sidebar:
 
-        st.header("Products")
-        
+        st.subheader("Products")
+
         # =========================
-        # B2B (Custom Expand)
+        # B2B
         # =========================
-        
-        # init state
-        if "b2b_open" not in st.session_state:
-            st.session_state.b2b_open = True
-        
-        # CSS để button nhìn như subheader
-        st.markdown("""
-        <style>
-        /* Ẩn style button mặc định */
-        section[data-testid="stSidebar"] button {
-            background: none !important;
-            border: none !important;
-            padding: 4px 0px !important;
-            text-align: left !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            box-shadow: none !important;
-        }
-        
-        /* Hover nhẹ */
-        section[data-testid="stSidebar"] button:hover {
-            background-color: transparent !important;
-            color: #2563eb !important;
-        }
-        
-        /* Menu item */
-        .menu-item {
-            padding: 6px 14px;
-            font-size: 14px;
-            font-weight: 400;
-        }
-        
-        .menu-item:hover {
-            background-color: #f3f4f6;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Toggle button (nhìn như subheader)
-        arrow = "▾ " if st.session_state.b2b_open else "▸ "
-        if st.button(f"{arrow} B2B", key="b2b_toggle"):
-            st.session_state.b2b_open = not st.session_state.b2b_open
-        
-        # Nội dung bên trong
-        if st.session_state.b2b_open:
-        
-            # tạo 2 cột: cột trái làm khoảng trống
-            col_space, col_content = st.columns([0.08, 0.92])
-        
-            with col_content:
-        
-                if st.button("Overview", key="overview_btn", use_container_width=True):
-                    st.session_state.page = "overview"
-        
-                if st.button("Integration Methods", key="integration_btn", use_container_width=True):
-                    st.session_state.page = "integration_methods"
-        
-                if st.button("Sandbox", key="sandbox_btn", use_container_width=True):
-                    st.session_state.page = "sandbox"
-        
-                if st.button("API Reference", key="api_ref_btn", use_container_width=True):
-                    st.session_state.page = "api_reference"
-            
+        with st.expander("B2B", expanded=True):
+
+            # ----- Top Pages -----
+            if st.button("Overview", use_container_width=True):
+                st.session_state.page = "overview"
+
+            if st.button("Integration Methods", use_container_width=True):
+                st.session_state.page = "integration_methods"
+
+            if st.button("Sandbox", use_container_width=True):
+                st.session_state.page = "sandbox"
+
+            if st.button("API Reference", use_container_width=True):
+                st.session_state.page = "api_reference"
+
             st.divider()
+
             # =========================
             # API Reference v02
             # =========================
