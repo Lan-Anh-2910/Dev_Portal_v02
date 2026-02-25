@@ -13,7 +13,7 @@ ENDPOINTS = [
 def render_product_sidebar():
     with st.sidebar:
 
-        st.subheader("Products")
+        st.header("Products")
 
         # =========================
         # B2B
