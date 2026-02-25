@@ -63,7 +63,7 @@ def render_product_sidebar():
         
         # Nội dung bên trong
         if st.session_state.b2b_open:
-
+        
             # tạo 2 cột: cột trái làm khoảng trống
             col_space, col_content = st.columns([0.08, 0.92])
         
